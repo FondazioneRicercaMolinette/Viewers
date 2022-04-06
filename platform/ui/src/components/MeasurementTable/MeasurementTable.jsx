@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import MeasurementItem from './MeasurementItem';
 
-const MeasurementTable = ({ data, title, amount, onClick, onEdit }) => {
+const MeasurementTable = ({ data, title, amount, onClick, onEdit, onChangeVisibility }) => {
   const { t } = useTranslation("MeasurementTable")
 
   return (
@@ -25,9 +25,11 @@ const MeasurementTable = ({ data, title, amount, onClick, onEdit }) => {
               color={measurementItem.color}
               label={measurementItem.label}
               isActive={measurementItem.isActive}
+              visible={measurementItem.visible}
               displayText={measurementItem.displayText}
               onClick={onClick}
               onEdit={onEdit}
+              onChangeVisibility={onChangeVisibility}
             />
           ))}
         {data.length === 0 && (
@@ -65,6 +67,7 @@ MeasurementTable.propTypes = {
   ),
   onClick: PropTypes.func,
   onEdit: PropTypes.func,
+  onChangeVisibility: PropTypes.func,
 };
 
 export default MeasurementTable;

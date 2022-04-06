@@ -225,6 +225,14 @@ function PanelMeasurementTableTracking({ servicesManager, extensionManager }) {
     });
   };
 
+  const onMeasurementItemChangeVisibilityHandler = ({ id, visible }) => {
+    const updatedMeasurement = MeasurementService.getMeasurement(id);
+
+    updatedMeasurement.visible = !visible;
+
+    MeasurementService.update(updatedMeasurement.id, updatedMeasurement, true);
+  };
+
   const onMeasurementItemClickHandler = ({ id, isActive }) => {
     if (!isActive) {
       const measurements = [...displayMeasurements];
@@ -245,8 +253,10 @@ function PanelMeasurementTableTracking({ servicesManager, extensionManager }) {
 
   return (
     <>
-      <div className="overflow-x-hidden overflow-y-auto invisible-scrollbar"
-           data-cy={"trackedMeasurements-panel"}>
+      <div
+        className="overflow-x-hidden overflow-y-auto invisible-scrollbar"
+        data-cy={'trackedMeasurements-panel'}
+      >
         {displayStudySummary.key && (
           <StudySummary
             date={formatDate(displayStudySummary.date)}
@@ -260,6 +270,7 @@ function PanelMeasurementTableTracking({ servicesManager, extensionManager }) {
           data={displayMeasurementsWithoutFindings}
           onClick={jumpToImage}
           onEdit={onMeasurementItemEditHandler}
+          onChangeVisibility={onMeasurementItemChangeVisibilityHandler}
         />
         {additionalFindings.length !== 0 && (
           <MeasurementTable
@@ -268,6 +279,7 @@ function PanelMeasurementTableTracking({ servicesManager, extensionManager }) {
             data={additionalFindings}
             onClick={jumpToImage}
             onEdit={onMeasurementItemEditHandler}
+            onChangeVisibility={onMeasurementItemChangeVisibilityHandler}
           />
         )}
       </div>
@@ -338,6 +350,7 @@ function _mapMeasurementToDisplay(measurement, types, DisplaySetService) {
     color: measurement.color,
     displayText: displayText || [],
     isActive: false, // activeMeasurementItem === i + 1,
+    visible: measurement.visible,
   };
 }
 
@@ -366,14 +379,15 @@ function _getDisplayText(
     : [1, 1];
   const unit = hasPixelSpacing ? 'mm' : 'px';
 
-  const prefix = findingText && label && [findingText] || [];
+  const prefix = (findingText && label && [findingText]) || [];
 
   switch (type) {
     case types.POLYLINE: {
       const { length } = measurement;
       const roundedLength = _round(length, 2);
 
-      return [...prefix,
+      return [
+        ...prefix,
         `${roundedLength} ${unit} (S:${seriesNumber}, I:${instanceNumber})`,
       ];
     }
@@ -382,7 +396,8 @@ function _getDisplayText(
       const roundedShortestDiameter = _round(shortestDiameter, 1);
       const roundedLongestDiameter = _round(longestDiameter, 1);
 
-      return [...prefix,
+      return [
+        ...prefix,
         `L: ${roundedLongestDiameter} ${unit} (S:${seriesNumber}, I:${instanceNumber})`,
         `W: ${roundedShortestDiameter} ${unit}`,
       ];
@@ -391,7 +406,8 @@ function _getDisplayText(
       const { area } = measurement;
       const roundedArea = _round(area, 2);
 
-      return [...prefix,
+      return [
+        ...prefix,
         `${roundedArea} ${unit}<sup>2</sup> (S:${seriesNumber}, I:${instanceNumber})`,
       ];
     }

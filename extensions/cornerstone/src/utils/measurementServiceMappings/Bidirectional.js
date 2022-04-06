@@ -48,6 +48,7 @@ const Bidirectional = {
       label: measurementData.label,
       description: measurementData.description,
       unit: measurementData.unit,
+      visible: measurementData.visible,
       shortestDiameter: measurementData.shortestDiameter,
       longestDiameter: measurementData.longestDiameter,
       type: getValueTypeFromToolType(tool),

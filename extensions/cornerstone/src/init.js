@@ -33,8 +33,9 @@ const TOOL_TYPES_WITH_CONTEXT_MENU = [
 ];
 
 const removeUndefined = updates =>
-  Object.keys(updates).forEach((key) => (updates[key] === undefined) && delete updates[key]);
-
+  Object.keys(updates).forEach(
+    key => updates[key] === undefined && delete updates[key]
+  );
 
 const _refreshViewports = () =>
   cs.getEnabledElements().forEach(({ element }) => cs.updateImage(element));
@@ -92,7 +93,8 @@ export default function init({
     const onGetMenuItems = (menus, props) => {
       const { element, currentPoints } = event.detail;
       const { subMenu } = props;
-      const nearbyToolData = contextMenuProps.nearbyToolData ||
+      const nearbyToolData =
+        contextMenuProps.nearbyToolData ||
         commandsManager.runCommand('getNearbyToolData', {
           element,
           canvasCoordinates: currentPoints.canvas,
@@ -100,27 +102,30 @@ export default function init({
         });
 
       const menuItems = [];
-      const defaultSite = ContextMenuMeasurements.getFindingSite({ ...props, nearbyToolData });
-      const subProps = { props, nearbyToolData, event, defaultSite, };
-      const menu = subMenu ?
-        menus.find(menu => menu.id === subMenu)
+      const defaultSite = ContextMenuMeasurements.getFindingSite({
+        ...props,
+        nearbyToolData,
+      });
+      const subProps = { props, nearbyToolData, event, defaultSite };
+      const menu = subMenu
+        ? menus.find(menu => menu.id === subMenu)
         : menus.find(menu => !menu.selector || menu.selector(subProps));
       if (!menu) {
-        console.log("No menu found", subMenu);
+        console.log('No menu found', subMenu);
         return undefined;
       }
       menu.items.forEach(item => {
         const toAdd = { ...item, value: nearbyToolData };
         if (!item.action) {
-          toAdd.action = (value) => {
+          toAdd.action = value => {
             props.onClose();
             const action = props[`on${item.actionType}`];
             if (action) {
               action.call(null, toAdd, value, subProps);
             } else {
-              console.warn("No action defined for", item);
+              console.warn('No action defined for', item);
             }
-          }
+          };
         }
         menuItems.push(toAdd);
       });
@@ -203,7 +208,7 @@ export default function init({
          */
         onSubMenu: (item, value, subProps) => {
           if (!value.subMenu) {
-            console.warn("No submenu defined for", item, value, subProps);
+            console.warn('No submenu defined for', item, value, subProps);
             return;
           }
           showContextMenu({ ...contextMenuProps, subMenu: value.subMenu });
@@ -214,13 +219,17 @@ export default function init({
           const { tool: measurementData } = item.value;
 
           const { color, findingSite, finding, findingUpdates } = value;
-          const findingText = (finding || findingSite) ? `${finding?.text || ''} ${findingSite?.text || ''}` : undefined;
+          const findingText =
+            finding || findingSite
+              ? `${finding?.text || ''} ${findingSite?.text || ''}`.trim()
+              : undefined;
+
           const updates = {
             ...findingUpdates,
             color,
             findingText,
             findingSite,
-            finding
+            finding,
           };
           removeUndefined(updates);
 
@@ -230,7 +239,7 @@ export default function init({
 
           const updatedMeasurement = Object.assign({}, measurement, updates);
 
-          console.log("updatedMeasurement=", updatedMeasurement);
+          console.log('updatedMeasurement=', updatedMeasurement);
 
           MeasurementService.update(
             updatedMeasurement.id,
@@ -275,11 +284,20 @@ export default function init({
   };
 
   const onRightClick = event => {
-    showContextMenu({ event, content: ContextMenuMeasurements, nearbyToolData: undefined });
+    showContextMenu({
+      event,
+      content: ContextMenuMeasurements,
+      nearbyToolData: undefined,
+    });
   };
 
   const onTouchPress = event => {
-    showContextMenu({ event, content: ContextMenuMeasurements, nearbyToolData: undefined, isTouchEvent: true });
+    showContextMenu({
+      event,
+      content: ContextMenuMeasurements,
+      nearbyToolData: undefined,
+      isTouchEvent: true,
+    });
   };
 
   const resetContextMenu = () => {
@@ -363,7 +381,7 @@ export default function init({
   // THIS
   // is a way for extensions that "depend" on this extension to notify it of
   // new cornerstone enabled elements so it's commands continue to work.
-  const handleOhifCornerstoneEnabledElementEvent = function (evt) {
+  const handleOhifCornerstoneEnabledElementEvent = function(evt) {
     const { context, viewportIndex, enabledElement } = evt.detail;
 
     setEnabledElement(viewportIndex, enabledElement, context);
@@ -516,7 +534,7 @@ const _connectToolsToMeasurementService = (
     MeasurementService.subscribe(
       MEASUREMENT_UPDATED,
       ({ source, measurement, notYetUpdatedAtSource }) => {
-        const { id, label, color } = measurement;
+        const { id, label, color, visible } = measurement;
 
         if (
           source.name == 'CornerstoneTools' &&
@@ -528,8 +546,10 @@ const _connectToolsToMeasurementService = (
         const cornerstoneMeasurement = getCornerstoneMeasurementById(id);
 
         if (cornerstoneMeasurement) {
+          // side effect, cs should provide api to prevent changing by ref.
           cornerstoneMeasurement.label = label;
           cornerstoneMeasurement.color = color;
+          cornerstoneMeasurement.visible = visible;
           if (cornerstoneMeasurement.hasOwnProperty('text')) {
             // Deal with the weird case of ArrowAnnotate.
             cornerstoneMeasurement.text = label;
