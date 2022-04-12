@@ -360,6 +360,13 @@ class MeasurementService {
     }
   }
 
+  /**
+   * Update all the given measurement items from measurements list.
+   * Each item from the first param list will be updated into measurements list only if it already exists on it.
+   *
+   * @param {Measurement[]} measurements list of measurements to be updated.
+   * @param {boolean} [notYetUpdatedAtSource=false] Tell whether correspondent change is already updated on source or not.
+   */
   updateMany(measurements = [], notYetUpdatedAtSource = false) {
     measurements.forEach(measurement => {
       this.update(measurement.id, measurement, notYetUpdatedAtSource);

@@ -35,6 +35,7 @@ const TOOL_TYPES_WITH_CONTEXT_MENU = [
 const removeUndefined = updates =>
   Object.keys(updates).forEach((key) => (updates[key] === undefined) && delete updates[key]);
 
+
 const _refreshViewports = () =>
   cs.getEnabledElements().forEach(({ element }) => cs.updateImage(element));
 
@@ -119,7 +120,7 @@ export default function init({
             } else {
               console.warn("No action defined for", item);
             }
-          };
+          }
         }
         menuItems.push(toAdd);
       });
@@ -214,7 +215,6 @@ export default function init({
 
           const { color, findingSite, finding, findingUpdates } = value;
           const findingText = (finding || findingSite) ? `${finding?.text || ''} ${findingSite?.text || ''}` : undefined;
-
           const updates = {
             ...findingUpdates,
             color,

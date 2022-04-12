@@ -400,8 +400,7 @@ function _getDisplayText(
       const { area } = measurement;
       const roundedArea = _round(area, 2);
 
-      return [
-        ...prefix,
+      return [...prefix,
         `${roundedArea} ${unit}<sup>2</sup> (S:${seriesNumber}, I:${instanceNumber})`,
       ];
     }
