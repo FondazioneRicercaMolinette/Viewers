@@ -47,6 +47,7 @@ const ArrowAnnotate = {
       label: measurementData.text,
       description: measurementData.description,
       unit: measurementData.unit,
+      active: measurementData.active,
       visible: measurementData.visible,
       text: measurementData.text,
       type: getValueTypeFromToolType(tool),

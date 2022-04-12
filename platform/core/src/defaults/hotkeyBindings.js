@@ -4,12 +4,43 @@ import windowLevelPresets from './windowLevelPresets';
  * Supported Keys: https://craig.is/killing/mice
  */
 export default [
-  { commandName: 'setToolActive', commandOptions: { toolName: 'Zoom' }, label: 'Zoom', keys: ['z'], isEditable: true },
-  { commandName: 'scaleUpViewport', label: 'Zoom In', keys: ['+'], isEditable: true },
-  { commandName: 'scaleDownViewport', label: 'Zoom Out', keys: ['-'], isEditable: true },
-  { commandName: 'fitViewportToWindow', label: 'Zoom to Fit', keys: ['='], isEditable: true },
-  { commandName: 'rotateViewportCW', label: 'Rotate Right', keys: ['r'], isEditable: true },
-  { commandName: 'rotateViewportCCW', label: 'Rotate Left', keys: ['l'], isEditable: true },
+  {
+    commandName: 'setToolActive',
+    commandOptions: { toolName: 'Zoom' },
+    label: 'Zoom',
+    keys: ['z'],
+    isEditable: true,
+  },
+  {
+    commandName: 'scaleUpViewport',
+    label: 'Zoom In',
+    keys: ['+'],
+    isEditable: true,
+  },
+  {
+    commandName: 'scaleDownViewport',
+    label: 'Zoom Out',
+    keys: ['-'],
+    isEditable: true,
+  },
+  {
+    commandName: 'fitViewportToWindow',
+    label: 'Zoom to Fit',
+    keys: ['='],
+    isEditable: true,
+  },
+  {
+    commandName: 'rotateViewportCW',
+    label: 'Rotate Right',
+    keys: ['r'],
+    isEditable: true,
+  },
+  {
+    commandName: 'rotateViewportCCW',
+    label: 'Rotate Left',
+    keys: ['l'],
+    isEditable: true,
+  },
   {
     commandName: 'flipViewportVertical',
     label: 'Flip Horizontally',
@@ -21,6 +52,18 @@ export default [
     label: 'Flip Vertically',
     keys: ['v'],
     isEditable: true,
+  },
+  {
+    commandName: 'toggleMeasurementsVisibility',
+    commandOptions: { ids: [] }, // get current active measurement
+    label: 'Toggle measurement visibility',
+    keys: ['m'],
+  },
+  {
+    commandName: 'toggleMeasurementsVisibility',
+    commandOptions: { ids: undefined }, // bulk op
+    label: 'Toggle all measurements visibility',
+    keys: ['shift+m'],
   },
   {
     commandName: 'toggleCine',

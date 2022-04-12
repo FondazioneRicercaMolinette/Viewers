@@ -534,7 +534,7 @@ const _connectToolsToMeasurementService = (
     MeasurementService.subscribe(
       MEASUREMENT_UPDATED,
       ({ source, measurement, notYetUpdatedAtSource }) => {
-        const { id, label, color, visible } = measurement;
+        const { id, label, color, visible, active } = measurement;
 
         if (
           source.name == 'CornerstoneTools' &&
@@ -550,6 +550,7 @@ const _connectToolsToMeasurementService = (
           cornerstoneMeasurement.label = label;
           cornerstoneMeasurement.color = color;
           cornerstoneMeasurement.visible = visible;
+          cornerstoneMeasurement.active = active;
           if (cornerstoneMeasurement.hasOwnProperty('text')) {
             // Deal with the weird case of ArrowAnnotate.
             cornerstoneMeasurement.text = label;

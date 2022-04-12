@@ -54,6 +54,7 @@ const Length = {
       description: measurementData.description,
       unit: measurementData.unit,
       color: measurementData.color,
+      active: measurementData.active,
       visible: measurementData.visible,
       length: measurementData.length,
       type: getValueTypeFromToolType(tool),
