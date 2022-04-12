@@ -45,7 +45,7 @@ const MeasurementItem = ({
       onClick={onClickHandler}
       role="button"
       tabIndex="0"
-      data-cy={'measurement-item'}
+      data-cy={"measurement-item"}
     >
       <div
         className={classnames(
@@ -63,7 +63,7 @@ const MeasurementItem = ({
         {displayText.map(line => (
           <span
             key={line}
-            style={{ borderColor: color }}
+            style={({ borderColor: color })}
             className="pl-2 text-base text-white border-l border-primary-light"
             dangerouslySetInnerHTML={{ __html: line }}
           ></span>

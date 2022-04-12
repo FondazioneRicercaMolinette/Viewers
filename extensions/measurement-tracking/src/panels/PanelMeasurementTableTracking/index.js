@@ -251,10 +251,8 @@ function PanelMeasurementTableTracking({
 
   return (
     <>
-      <div
-        className="overflow-x-hidden overflow-y-auto invisible-scrollbar"
-        data-cy={'trackedMeasurements-panel'}
-      >
+      <div className="overflow-x-hidden overflow-y-auto invisible-scrollbar"
+           data-cy={"trackedMeasurements-panel"}>
         {displayStudySummary.key && (
           <StudySummary
             date={formatDate(displayStudySummary.date)}
@@ -377,15 +375,14 @@ function _getDisplayText(
     : [1, 1];
   const unit = hasPixelSpacing ? 'mm' : 'px';
 
-  const prefix = (findingText && label && [findingText]) || [];
+  const prefix = findingText && label && [findingText] || [];
 
   switch (type) {
     case types.POLYLINE: {
       const { length } = measurement;
       const roundedLength = _round(length, 2);
 
-      return [
-        ...prefix,
+      return [...prefix,
         `${roundedLength} ${unit} (S:${seriesNumber}, I:${instanceNumber})`,
       ];
     }
@@ -394,8 +391,7 @@ function _getDisplayText(
       const roundedShortestDiameter = _round(shortestDiameter, 1);
       const roundedLongestDiameter = _round(longestDiameter, 1);
 
-      return [
-        ...prefix,
+      return [...prefix,
         `L: ${roundedLongestDiameter} ${unit} (S:${seriesNumber}, I:${instanceNumber})`,
         `W: ${roundedShortestDiameter} ${unit}`,
       ];
